@@ -1,11 +1,11 @@
 package com.atguigu.gmall.user.service.impl;
 
-import com.atguigu.gmall.user.bean.UmsMember;
-import com.atguigu.gmall.user.bean.UmsMemberReceiveAddress;
+import com.atguigu.gmall.bean.UmsMember;
+import com.atguigu.gmall.bean.UmsMemberReceiveAddress;
+import com.atguigu.gmall.service.UserService;//api
 import com.atguigu.gmall.user.mapper.UmsMemberReceiveAddressMapper;
 import com.atguigu.gmall.user.mapper.UserMapper;
-import com.atguigu.gmall.user.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +27,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UmsMember> getAllUser() {
-        QueryWrapper<UmsMember> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(UmsMember::getStatus,"1");
-        return userMapper.selectList(queryWrapper);
+
+        List<UmsMember> umsMembers = userMapper.selectAll();//userMapper.selectAllUser();
+
+        return umsMembers;
     }
 
     @Override
     public List<UmsMemberReceiveAddress> getReceiveAddressByMemberId(String memberId) {
-        QueryWrapper<UmsMemberReceiveAddress> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(UmsMemberReceiveAddress::getMemberId,memberId);
-        return umsMemberReceiveAddressMapper.selectList(queryWrapper);
+
+        // 封装的参数对象
+        UmsMemberReceiveAddress umsMemberReceiveAddress = new UmsMemberReceiveAddress();
+        umsMemberReceiveAddress.setMemberId(memberId);
+        List<UmsMemberReceiveAddress> umsMemberReceiveAddresses = umsMemberReceiveAddressMapper.select(umsMemberReceiveAddress);
+
+        return umsMemberReceiveAddresses;
     }
 }
